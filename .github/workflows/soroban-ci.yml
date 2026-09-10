@@ -1,0 +1,52 @@
+name: Soroban Contract CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'soroban-contracts/**'
+      - '.github/workflows/soroban-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'soroban-contracts/**'
+      - '.github/workflows/soroban-ci.yml'
+
+jobs:
+  test-contract:
+    name: Soroban RoyaltyVault Contract Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+          components: clippy, rustfmt
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "soroban-contracts/royalty-vault -> target"
+
+      - name: Check Formatting
+        run: |
+          cd soroban-contracts/royalty-vault
+          cargo fmt --check
+
+      - name: Run Clippy Linter
+        run: |
+          cd soroban-contracts/royalty-vault
+          cargo clippy --all-targets -- -D warnings
+
+      - name: Run Unit Tests
+        run: |
+          cd soroban-contracts/royalty-vault
+          cargo test
+
+      - name: Build WASM Target
+        run: |
+          cd soroban-contracts/royalty-vault
+          cargo build --target wasm32-unknown-unknown --release
