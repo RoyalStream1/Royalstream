@@ -1,0 +1,58 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Creator {
+  id            String         @id @default(uuid())
+  walletAddress String         @unique
+  name          String
+  bio           String?
+  avatarUrl     String?
+  socialLink    String?
+  isVerified    Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  vaults        RoyaltyVault[]
+}
+
+model RoyaltyVault {
+  id                      String              @id @default(uuid())
+  contractId              String              @unique
+  creatorAddress          String
+  creator                 Creator             @relation(fields: [creatorAddress], references: [walletAddress])
+  tokenAsset              String
+  totalShares             Int
+  sharesMinted            Int                 @default(0)
+  sharePriceStroops       String
+  periodStart             Int
+  periodEnd               Int
+  totalDepositedStroops   String              @default("0")
+  status                  String              @default("ACTIVE")
+  streamName              String
+  description             String
+  genre                   String
+  projectedAnnualYieldPct Float
+  revenueSourceType       String              @default("MANUAL")
+  createdAt               DateTime            @default(now())
+  submissions             RevenueSubmission[]
+}
+
+model RevenueSubmission {
+  id                   String       @id @default(uuid())
+  vaultId              String
+  vault                RoyaltyVault @relation(fields: [vaultId], references: [id])
+  creatorId            String
+  period               String
+  amountStroops        String
+  sourceType           String
+  proofUrl             String?
+  status               String       @default("PENDING_TIMELOCK")
+  disputeReason        String?
+  attestationSignature String?
+  timelockEndsAt       DateTime
+  createdAt            DateTime     @default(now())
+}
