@@ -231,6 +231,10 @@ app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ error: err.message || 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`[RoyalStream API] Express server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`[RoyalStream API] Express server running on port ${PORT}`);
+  });
+}
+
+export default app;
