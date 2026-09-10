@@ -1,0 +1,19 @@
+# Global Maintainers
+* @royalstream/core-maintainers
+
+# Soroban Smart Contracts
+/soroban-contracts/ @royalstream/contract-team @royalstream/core-maintainers
+
+# Apps
+/apps/frontend/ @royalstream/frontend-team
+/apps/backend-api/ @royalstream/backend-team
+/apps/oracle-worker/ @royalstream/oracle-team @royalstream/contract-team
+
+# Shared Packages
+/packages/stellar-sdk/ @royalstream/contract-team @royalstream/frontend-team
+/packages/types/ @royalstream/core-maintainers
+/packages/ui/ @royalstream/frontend-team
+
+# Documentation & Governance
+/docs/ @royalstream/tech-writers
+/.github/ @royalstream/core-maintainers
