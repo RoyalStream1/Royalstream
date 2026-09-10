@@ -110,6 +110,23 @@ const CreateSubmissionSchema = z.object({
 
 // --- Routes ---
 
+app.get('/', (req: Request, res: Response) => {
+  res.json({
+    name: 'RoyalStream Backend API',
+    status: 'OK',
+    version: '0.1.0',
+    endpoints: {
+      health: '/api/health',
+      creators: '/api/creators',
+      vaults: '/api/vaults',
+    },
+  });
+});
+
+app.get('/health', (req: Request, res: Response) => {
+  res.json({ status: 'ok', service: 'royalstream-backend-api', timestamp: new Date().toISOString() });
+});
+
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'royalstream-backend-api', timestamp: new Date().toISOString() });
 });
