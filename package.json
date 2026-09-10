@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:frontend": "turbo run build --filter=@royalstream/frontend",
+    "build:backend": "turbo run build --filter=@royalstream/backend-api",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
