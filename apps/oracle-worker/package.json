@@ -11,7 +11,7 @@
     "@royalstream/stellar-sdk": "workspace:*",
     "@royalstream/types": "workspace:*",
     "dotenv": "^16.4.5",
-    "node-cron": "^3.0.3"
+    "node-cron": "^4.6.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
