@@ -10,7 +10,7 @@
   "dependencies": {
     "@royalstream/stellar-sdk": "workspace:*",
     "@royalstream/types": "workspace:*",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.4.2",
     "node-cron": "^3.0.3"
   },
   "devDependencies": {
