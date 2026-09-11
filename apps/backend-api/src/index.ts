@@ -123,20 +123,16 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'ok', service: 'royalstream-backend-api', timestamp: new Date().toISOString() });
-});
-
-app.get('/api/health', (req: Request, res: Response) => {
+app.get(['/health', '/api/health'], (req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'royalstream-backend-api', timestamp: new Date().toISOString() });
 });
 
 // Creators
-app.get('/api/creators', (req: Request, res: Response) => {
+app.get(['/creators', '/api/creators'], (req: Request, res: Response) => {
   res.json(Array.from(creatorsStore.values()));
 });
 
-app.post('/api/creators', (req: Request, res: Response, next: NextFunction) => {
+app.post(['/creators', '/api/creators'], (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = CreateCreatorSchema.parse(req.body);
     const existing = creatorsStore.get(data.walletAddress);
@@ -158,7 +154,7 @@ app.post('/api/creators', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Vaults
-app.get('/api/vaults', (req: Request, res: Response) => {
+app.get(['/vaults', '/api/vaults'], (req: Request, res: Response) => {
   const genre = req.query.genre as string;
   let vaults = Array.from(vaultsStore.values());
   if (genre) {
@@ -167,7 +163,7 @@ app.get('/api/vaults', (req: Request, res: Response) => {
   res.json(vaults);
 });
 
-app.get('/api/vaults/:id', (req: Request, res: Response) => {
+app.get(['/vaults/:id', '/api/vaults/:id'], (req: Request, res: Response) => {
   const vault = vaultsStore.get(req.params.id);
   if (!vault) {
     return res.status(404).json({ error: 'Vault not found' });
@@ -175,7 +171,7 @@ app.get('/api/vaults/:id', (req: Request, res: Response) => {
   res.json(vault);
 });
 
-app.post('/api/vaults', (req: Request, res: Response, next: NextFunction) => {
+app.post(['/vaults', '/api/vaults'], (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = CreateVaultSchema.parse(req.body);
     const newVault: RoyaltyVault = {
@@ -194,7 +190,7 @@ app.post('/api/vaults', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Revenue Submissions
-app.post('/api/submissions', (req: Request, res: Response, next: NextFunction) => {
+app.post(['/submissions', '/api/submissions'], (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = CreateSubmissionSchema.parse(req.body);
     const delayMs = (parseInt(process.env.ORACLE_SUBMISSION_DELAY_HOURS || '48', 10)) * 3600 * 1000;
@@ -212,7 +208,7 @@ app.post('/api/submissions', (req: Request, res: Response, next: NextFunction) =
   }
 });
 
-app.post('/api/submissions/:id/dispute', (req: Request, res: Response) => {
+app.post(['/submissions/:id/dispute', '/api/submissions/:id/dispute'], (req: Request, res: Response) => {
   const submission = submissionsStore.get(req.params.id);
   if (!submission) {
     return res.status(404).json({ error: 'Submission not found' });
